@@ -10,6 +10,15 @@ repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 dependencies {
     implementation("com.slack.api:bolt-socket-mode:1.39.3")
     implementation("javax.websocket:javax.websocket-api:1.1")
