@@ -1,7 +1,7 @@
 package com.redhat.acrobot
 
-import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.Persistence
+import org.hibernate.SessionFactory
 import org.hibernate.cfg.AvailableSettings
 import kotlin.system.exitProcess
 
@@ -30,6 +30,8 @@ private fun makeOverrides(): Map<String, String> {
     )
 }
 
-fun createEntityManagerFactory(): EntityManagerFactory {
-    return Persistence.createEntityManagerFactory("com.redhat.acrobot", makeOverrides())
+fun createSessionFactory(): SessionFactory {
+    return Persistence
+        .createEntityManagerFactory("com.redhat.acrobot", makeOverrides())
+        .unwrap(SessionFactory::class.java)
 }
