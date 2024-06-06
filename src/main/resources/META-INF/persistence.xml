@@ -8,7 +8,7 @@
         <class>com.redhat.acrobot.entities.Explanation</class>
 
         <properties>
-            <!-- URL and credentials set in DB.kt -->
+            <!-- URL and credentials set in DBInit.kt -->
 
             <!-- Automatic schema export -->
             <property name="jakarta.persistence.schema-generation.database.action"
