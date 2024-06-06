@@ -1,6 +1,7 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.0.0"
+    id("org.jetbrains.kotlin.jvm") version "1.9.24"
+    kotlin("kapt") version "1.9.24"
 }
 
 group = "com.redhat"
@@ -27,7 +28,7 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:8.4.0")
 
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
-    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
+    kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
