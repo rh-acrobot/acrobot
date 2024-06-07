@@ -124,7 +124,10 @@ private fun processLookup(session: Session, command: String): String {
     return if (acronym == null || acronym.explanations.isEmpty()) {
         Messages.ACRONYM_NOT_FOUND
     } else {
-        acronym.explanations.sortedBy { it.explanation }.joinToString("\n") { it.explanation }
+        acronym
+            .explanations
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.explanation })
+            .joinToString("\n") { it.explanation }
     }
 }
 
