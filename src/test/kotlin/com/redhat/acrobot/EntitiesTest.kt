@@ -87,6 +87,15 @@ class EntitiesTest : TestLifecycleDB {
         }
 
         @Test
+        fun `createExplanation adds explanation to Acronym`() {
+            val explanation = acronymA.createExplanation(user, "Something.")
+            session.persist(explanation)
+
+            assertEquals(1, getAllExplanations().count())
+            assertTrue(acronymA.explanations.contains(explanation))
+        }
+
+        @Test
         fun `findExplanation returns null when no explanations exist`() {
             assertNull(findExplanation(session, acronymA, "An explanation."))
         }
