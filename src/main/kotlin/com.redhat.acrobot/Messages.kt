@@ -1,8 +1,12 @@
 package com.redhat.acrobot
 
+import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
+import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
+import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
+
 object Messages {
     const val INCORRECT_FORMAT_FOR_SAVING_ACRONYM: String =
-        "Please enter the acronym in format of ! `acronym` = `explanation`" +
+        "Please enter the acronym in format of $CHANGE_PREFIX`acronym` $ACRONYM_SEPARATOR `explanation`" +
                 " to save an explanation, or only `acronym` to get an explanation. Alternatively, send `help` for more information."
 
     const val EXPLANATION_SAVED: String = "Thank you, I have saved your explanation."
@@ -18,11 +22,11 @@ object Messages {
 
 
     const val ACRONYM_NOT_FOUND: String =
-        "No such acronym found. Add it using the syntax `! acronym = explanation` (queries are case-insensitive), " +
+        "No such acronym found. Add it using the syntax `${CHANGE_PREFIX}acronym $ACRONYM_SEPARATOR explanation` (queries are case-insensitive), " +
                 "or send `help` for more info."
 
     const val MULTIPLE_UPDATE_SEPARATORS =
-        "Your message cannot contain multiple \"=>\"s, because I do not know how to parse it."
+        "Your message cannot contain multiple \"$UPDATE_EXPLANATION_SEPARATOR\"s, because I do not know how to parse it."
 
     const val HELP_TEXT: String = "You are interacting with Acrobot. \n\n" +
             "Actions:\n" +

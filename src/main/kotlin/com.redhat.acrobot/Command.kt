@@ -1,5 +1,8 @@
 package com.redhat.acrobot
 
+import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
+import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
+import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
 import com.redhat.acrobot.entities.Explanation
 import com.slack.api.bolt.context.builtin.EventContext
@@ -10,10 +13,6 @@ data class CommandContext(
     val slack: EventContext,
     val authorId: String,
 )
-
-private const val CHANGE_PREFIX = "!"
-private const val ACRONYM_SEPARATOR = "="
-private const val UPDATE_EXPLANATION_SEPARATOR = "=>"
 
 private fun processReplaceExplanation(
     userId: String,
