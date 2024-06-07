@@ -7,7 +7,9 @@ import com.redhat.acrobot.entities.Explanation_
 import org.hibernate.Session
 
 fun findOrCreateAcronym(session: Session, text: String): Acronym {
-    return session.byNaturalId(Acronym::class.java).using(Acronym_.acronym, text).load()
+    val normalizedText = Acronym.normalizeText(text)
+
+    return session.byNaturalId(Acronym::class.java).using(Acronym_.acronym, normalizedText).load()
 }
 
 fun findExplanation(session: Session, acronym: Acronym, text: String): Explanation? {

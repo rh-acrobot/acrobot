@@ -6,6 +6,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -74,5 +75,9 @@ public class Acronym implements java.io.Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(acronym);
+    }
+
+    public static String normalizeText(String acronym) {
+        return acronym.toUpperCase(Locale.ROOT);
     }
 }
