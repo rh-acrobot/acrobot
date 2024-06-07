@@ -32,7 +32,12 @@ private fun processReplaceExplanation(
     return Messages.ACRONYM_UPDATED
 }
 
-fun processRemoveExplanation(userId: String, session: Session, acronym: Acronym?, explanationText: String): String {
+private fun processRemoveExplanation(
+    userId: String,
+    session: Session,
+    acronym: Acronym?,
+    explanationText: String,
+): String {
     acronym ?: return Messages.ACRONYM_NOT_FOUND
 
     val target = findExplanation(session, acronym, explanationText) ?: return Messages.EXPLANATION_NOT_FOUND
