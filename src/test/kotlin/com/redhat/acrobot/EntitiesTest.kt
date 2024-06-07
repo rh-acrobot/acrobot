@@ -141,5 +141,24 @@ class EntitiesTest : TestLifecycleDB {
 
             assertNotEquals(foundA, foundB)
         }
+
+        @Test
+        fun `deleteExplanation deletes explanation`() {
+            val explanation = acronymA.createExplanation(user, "Some explanation.")
+            assertEquals(1, getAllExplanations().count())
+
+            deleteExplanation(session, explanation)
+            assertEquals(0, getAllExplanations().count())
+        }
+
+        @Test
+        fun `deleteExplanation updates acronym`() {
+            val explanation = acronymA.createExplanation(user, "Some explanation.")
+            assertTrue(acronymA.explanations.contains(explanation))
+
+            deleteExplanation(session, explanation)
+            assertFalse(acronymA.explanations.contains(explanation))
+            assertEquals(0, acronymA.explanations.size)
+        }
     }
 }

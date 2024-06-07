@@ -23,9 +23,9 @@ private fun processReplaceExplanation(
     }
 
     val replacement = acronym.createExplanation(userId, newExplanationText)
-
     session.persist(replacement)
-    session.remove(existingExplanation)
+
+    deleteExplanation(session, existingExplanation)
 
     return Messages.ACRONYM_UPDATED
 }
@@ -44,7 +44,7 @@ private fun processRemoveExplanation(
         return Messages.INSUFFICIENT_PRIVILEGES
     }
 
-    session.remove(target)
+    deleteExplanation(session, target)
 
     return Messages.EXPLANATION_REMOVED
 }

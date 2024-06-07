@@ -28,3 +28,8 @@ fun findExplanation(session: Session, acronym: Acronym, text: String): Explanati
         .using(Explanation_.explanation, text)
         .load()
 }
+
+fun deleteExplanation(session: Session, explanation: Explanation) {
+    session.remove(explanation)
+    explanation.acronym.explanations.remove(explanation)
+}
