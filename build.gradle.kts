@@ -30,8 +30,8 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
     kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(kotlin("test"))
+    testRuntimeOnly("com.h2database:h2:2.2.224")
 }
 
 tasks.test {
