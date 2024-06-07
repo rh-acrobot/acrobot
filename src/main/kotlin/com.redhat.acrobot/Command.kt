@@ -6,7 +6,6 @@ import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
 import com.redhat.acrobot.entities.Explanation
 import org.hibernate.Session
-import org.hibernate.SessionFactory
 
 private fun processReplaceExplanation(
     userId: String,
@@ -68,7 +67,7 @@ private fun processNewExplanation(
     return Messages.EXPLANATION_SAVED
 }
 
-private fun processChange(userId: String, sessionFactory: SessionFactory, command: String): String {
+private fun processChange(userId: String, session: Session, command: String): String {
     val parts = command.split(ACRONYM_SEPARATOR, limit = 2).map { it.trim() }
 
     if (parts.size < 2) {
@@ -78,72 +77,68 @@ private fun processChange(userId: String, sessionFactory: SessionFactory, comman
     val acronymText = parts[0]
     val changeInstruction = parts[1]
 
-    return sessionFactory.fromTransaction cmd@{ session ->
-        if (changeInstruction.contains(UPDATE_EXPLANATION_SEPARATOR)) {
-            val acronym = findAcronym(session, acronymText)
+    if (changeInstruction.contains(UPDATE_EXPLANATION_SEPARATOR)) {
+        val acronym = findAcronym(session, acronymText)
 
-            val changeParts = changeInstruction.split(UPDATE_EXPLANATION_SEPARATOR)
+        val changeParts = changeInstruction.split(UPDATE_EXPLANATION_SEPARATOR)
 
-            if (changeParts.size > 2) {
-                return@cmd Messages.MULTIPLE_UPDATE_SEPARATORS
-            }
+        if (changeParts.size > 2) {
+            return Messages.MULTIPLE_UPDATE_SEPARATORS
+        }
 
-            check(changeParts.size == 2)
+        check(changeParts.size == 2)
 
-            val oldExplanationText = changeParts[0].trim()
-            val newExplanationText = changeParts[1].trim()
+        val oldExplanationText = changeParts[0].trim()
+        val newExplanationText = changeParts[1].trim()
 
-            if (newExplanationText.isNotEmpty()) {
-                processReplaceExplanation(
-                    userId = userId,
-                    session = session,
-                    acronym = acronym,
-                    oldExplanationText = oldExplanationText,
-                    newExplanationText = newExplanationText,
-                )
-            } else {
-                processRemoveExplanation(
-                    userId = userId,
-                    session = session,
-                    acronym = acronym,
-                    explanationText = oldExplanationText,
-                )
-            }
-        } else {
-            val acronym = findOrCreateAcronym(session, acronymText)
-
-            processNewExplanation(
+        return if (newExplanationText.isNotEmpty()) {
+            processReplaceExplanation(
                 userId = userId,
                 session = session,
                 acronym = acronym,
-                newExplanationText = changeInstruction,
+                oldExplanationText = oldExplanationText,
+                newExplanationText = newExplanationText,
+            )
+        } else {
+            processRemoveExplanation(
+                userId = userId,
+                session = session,
+                acronym = acronym,
+                explanationText = oldExplanationText,
             )
         }
+    } else {
+        val acronym = findOrCreateAcronym(session, acronymText)
+
+        return processNewExplanation(
+            userId = userId,
+            session = session,
+            acronym = acronym,
+            newExplanationText = changeInstruction,
+        )
     }
 }
 
-private fun processLookup(sessionFactory: SessionFactory, command: String): String {
-    return sessionFactory.fromTransaction { session ->
-        val acronym = findAcronym(session, command.trim())
+private fun processLookup(session: Session, command: String): String {
+    val acronym = findAcronym(session, command.trim())
 
-        if (acronym == null || acronym.explanations.isEmpty()) {
-            Messages.ACRONYM_NOT_FOUND
-        } else {
-            acronym.explanations.sortedBy { it.explanation }.joinToString("\n") { it.explanation }
-        }
+    return if (acronym == null || acronym.explanations.isEmpty()) {
+        Messages.ACRONYM_NOT_FOUND
+    } else {
+        acronym.explanations.sortedBy { it.explanation }.joinToString("\n") { it.explanation }
     }
 }
 
-fun processCommand(userId: String, sessionFactory: SessionFactory, command: String): String {
+fun processCommand(userId: String, session: Session, command: String): String {
     val adjusted = command.trim()
 
     return if (adjusted.startsWith(CHANGE_PREFIX)) {
         processChange(
             userId = userId,
-            sessionFactory = sessionFactory,
+            session = session,
             command = adjusted.removePrefix("!"),
         )
     } else {
-        processLookup(sessionFactory, adjusted)
+        processLookup(session, adjusted)
     }
 }

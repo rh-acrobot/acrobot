@@ -45,11 +45,13 @@ fun main() {
                 ctx = ctx,
                 channel = payload.event.channel,
                 threadTs = payload.event.threadTs,
-                message = processCommand(
-                    userId = payload.event.user,
-                    sessionFactory = sessionFactory,
-                    command = text.cleanSlackMessage(ctx),
-                ),
+                message = sessionFactory.fromTransaction { session ->
+                    processCommand(
+                        userId = payload.event.user,
+                        session = session,
+                        command = text.cleanSlackMessage(ctx),
+                    )
+                },
             )
         }
 
@@ -73,11 +75,13 @@ fun main() {
                     ctx = slackCtx,
                     channel = payload.event.channel,
                     threadTs = payload.event.threadTs,
-                    message = processCommand(
-                        userId = payload.event.user,
-                        sessionFactory = sessionFactory,
-                        command = text.cleanSlackMessage(slackCtx),
-                    ),
+                    message = sessionFactory.fromTransaction { session ->
+                        processCommand(
+                            userId = payload.event.user,
+                            session = session,
+                            command = text.cleanSlackMessage(slackCtx),
+                        )
+                    },
                 )
             }
         }
