@@ -58,13 +58,13 @@ fun main() {
         ctx.ack()
     }
 
-    app.event(MessageEvent::class.java) { payload, slackCtx ->
+    app.event(MessageEvent::class.java) { payload, ctx ->
         app.executorService().submit {
             val channelType = payload.event.channelType
             val text = payload.event.text
 
-            if (channelType == "im" || text.hasSelfMention(slackCtx)) {
-                slackCtx.logger.info(
+            if (channelType == "im" || text.hasSelfMention(ctx)) {
+                ctx.logger.info(
                     "Processing message: channel {} ({}); content: {}",
                     payload.event.channel,
                     channelType,
@@ -72,21 +72,21 @@ fun main() {
                 )
 
                 trySendMessage(
-                    ctx = slackCtx,
+                    ctx = ctx,
                     channel = payload.event.channel,
                     threadTs = payload.event.threadTs,
                     message = sessionFactory.fromTransaction { session ->
                         processCommand(
                             userId = payload.event.user,
                             session = session,
-                            command = text.cleanSlackMessage(slackCtx),
+                            command = text.cleanSlackMessage(ctx),
                         )
                     },
                 )
             }
         }
 
-        slackCtx.ack()
+        ctx.ack()
     }
 
     SocketModeApp(app).start()
