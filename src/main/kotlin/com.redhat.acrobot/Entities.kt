@@ -6,10 +6,18 @@ import com.redhat.acrobot.entities.Explanation
 import com.redhat.acrobot.entities.Explanation_
 import org.hibernate.Session
 
+private fun findAcronymNormalized(session: Session, normalizedText: String): Acronym? {
+    return session.byNaturalId(Acronym::class.java).using(Acronym_.acronym, normalizedText).load()
+}
+
+fun findAcronym(session: Session, text: String): Acronym? {
+    return findAcronymNormalized(session, Acronym.normalizeText(text))
+}
+
 fun findOrCreateAcronym(session: Session, text: String): Acronym {
     val normalizedText = Acronym.normalizeText(text)
 
-    return session.byNaturalId(Acronym::class.java).using(Acronym_.acronym, normalizedText).load()
+    return findAcronymNormalized(session, normalizedText)
         ?: Acronym(normalizedText).also { session.persist(it) }
 }
 
