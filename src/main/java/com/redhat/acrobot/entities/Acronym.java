@@ -56,6 +56,18 @@ public class Acronym implements java.io.Serializable {
         this.explanations = explanations;
     }
 
+    public Explanation createExplanation(String authorId, String explanation) {
+        var created = new Explanation(this, authorId, explanation);
+
+        if (explanations == null) {
+            explanations = new HashSet<>();
+        }
+
+        explanations.add(created);
+
+        return created;
+    }
+
     @Override
     public String toString() {
         return "Acronym{" +

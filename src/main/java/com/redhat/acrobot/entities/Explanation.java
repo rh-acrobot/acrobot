@@ -25,7 +25,7 @@ public class Explanation implements Serializable {
     public Explanation() {
     }
 
-    public Explanation(Acronym acronym, String authorId, String explanation) {
+    Explanation(Acronym acronym, String authorId, String explanation) {
         this.acronym = acronym;
         this.authorId = authorId;
         this.explanation = explanation;

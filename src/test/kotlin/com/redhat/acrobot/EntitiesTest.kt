@@ -95,7 +95,7 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation finds explanation when it exists`() {
             val text = "An explanation."
 
-            val created = Explanation(acronymA, user, text)
+            val created = acronymA.createExplanation(user, text)
             session.persist(created)
 
             val found = findExplanation(session, acronymA, text)
@@ -107,7 +107,7 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation does not find explanation for other acronym`() {
             val text = "An explanation."
 
-            val created = Explanation(acronymA, user, text)
+            val created = acronymA.createExplanation(user, text)
             session.persist(created)
 
             assertNull(findExplanation(session, acronymB, text))
@@ -115,7 +115,7 @@ class EntitiesTest : TestLifecycleDB {
 
         @Test
         fun `findExplanation does not find explanation for different text`() {
-            val created = Explanation(acronymA, user, "An explanation.")
+            val created = acronymA.createExplanation(user, "An explanation.")
             session.persist(created)
 
             assertNull(findExplanation(session, acronymA, "Some other explanation."))
@@ -125,10 +125,10 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation handles explanations with the same text`() {
             val text = "An explanation."
 
-            val createdA = Explanation(acronymA, user, text)
+            val createdA = acronymA.createExplanation(user, text)
             session.persist(createdA)
 
-            val createdB = Explanation(acronymB, user, text)
+            val createdB = acronymB.createExplanation(user, text)
             session.persist(createdB)
 
             assertEquals(2, getAllExplanations().count())

@@ -4,7 +4,6 @@ import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
 import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
 import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
-import com.redhat.acrobot.entities.Explanation
 import org.hibernate.Session
 
 private fun processReplaceExplanation(
@@ -23,7 +22,7 @@ private fun processReplaceExplanation(
         return Messages.INSUFFICIENT_PRIVILEGES
     }
 
-    val replacement = Explanation(acronym, userId, newExplanationText)
+    val replacement = acronym.createExplanation(userId, newExplanationText)
 
     session.persist(replacement)
     session.remove(existingExplanation)
@@ -62,7 +61,7 @@ private fun processNewExplanation(
         return "That explanation already exists for the given acronym. If you created it, you can update it with ${CHANGE_PREFIX}change ${acronym.acronym} $ACRONYM_SEPARATOR $newExplanationText $UPDATE_EXPLANATION_SEPARATOR [new version]"
     }
 
-    session.persist(Explanation(acronym, userId, newExplanationText))
+    session.persist(acronym.createExplanation(userId, newExplanationText))
 
     return Messages.EXPLANATION_SAVED
 }
