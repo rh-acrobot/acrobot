@@ -5,14 +5,8 @@ import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
 import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
 import com.redhat.acrobot.entities.Explanation
-import com.slack.api.bolt.context.builtin.EventContext
 import org.hibernate.Session
 import org.hibernate.SessionFactory
-
-data class CommandContext(
-    val slack: EventContext,
-    val authorId: String,
-)
 
 private fun processReplaceExplanation(
     userId: String,
@@ -69,7 +63,7 @@ private fun processNewExplanation(
     return Messages.EXPLANATION_SAVED
 }
 
-private fun processChange(ctx: CommandContext, sessionFactory: SessionFactory, command: String): String {
+private fun processChange(userId: String, sessionFactory: SessionFactory, command: String): String {
     val parts = command.split(ACRONYM_SEPARATOR, limit = 2).map { it.trim() }
 
     if (parts.size < 2) {
@@ -96,7 +90,7 @@ private fun processChange(ctx: CommandContext, sessionFactory: SessionFactory, c
 
             if (newExplanationText.isNotEmpty()) {
                 processReplaceExplanation(
-                    userId = ctx.authorId,
+                    userId = userId,
                     session = session,
                     acronym = acronym,
                     oldExplanationText = oldExplanationText,
@@ -104,7 +98,7 @@ private fun processChange(ctx: CommandContext, sessionFactory: SessionFactory, c
                 )
             } else {
                 processRemoveExplanation(
-                    userId = ctx.authorId,
+                    userId = userId,
                     session = session,
                     acronym = acronym,
                     explanationText = oldExplanationText,
@@ -114,7 +108,7 @@ private fun processChange(ctx: CommandContext, sessionFactory: SessionFactory, c
             val acronym = findOrCreateAcronym(session, acronymText)
 
             processNewExplanation(
-                userId = ctx.authorId,
+                userId = userId,
                 session = session,
                 acronym = acronym,
                 newExplanationText = changeInstruction,
@@ -135,11 +129,15 @@ private fun processLookup(sessionFactory: SessionFactory, command: String): Stri
     }
 }
 
-fun processCommand(ctx: CommandContext, sessionFactory: SessionFactory, command: String): String {
+fun processCommand(userId: String, sessionFactory: SessionFactory, command: String): String {
     val adjusted = command.trim()
 
     return if (adjusted.startsWith(CHANGE_PREFIX)) {
-        processChange(ctx, sessionFactory, adjusted.removePrefix("!"))
+        processChange(
+            userId = userId,
+            sessionFactory = sessionFactory,
+            command = adjusted.removePrefix("!"),
+        )
     } else {
         processLookup(sessionFactory, adjusted)
     }

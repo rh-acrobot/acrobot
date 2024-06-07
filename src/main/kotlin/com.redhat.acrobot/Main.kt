@@ -46,10 +46,7 @@ fun main() {
                 channel = payload.event.channel,
                 threadTs = payload.event.threadTs,
                 message = processCommand(
-                    ctx = CommandContext(
-                        slack = ctx,
-                        authorId = payload.event.user,
-                    ),
+                    userId = payload.event.user,
                     sessionFactory = sessionFactory,
                     command = text.cleanSlackMessage(ctx),
                 ),
@@ -59,13 +56,13 @@ fun main() {
         ctx.ack()
     }
 
-    app.event(MessageEvent::class.java) { payload, ctx ->
+    app.event(MessageEvent::class.java) { payload, slackCtx ->
         app.executorService().submit {
             val channelType = payload.event.channelType
             val text = payload.event.text
 
-            if (channelType == "im" || text.hasSelfMention(ctx)) {
-                ctx.logger.info(
+            if (channelType == "im" || text.hasSelfMention(slackCtx)) {
+                slackCtx.logger.info(
                     "Processing message: channel {} ({}); content: {}",
                     payload.event.channel,
                     channelType,
@@ -73,22 +70,19 @@ fun main() {
                 )
 
                 trySendMessage(
-                    ctx = ctx,
+                    ctx = slackCtx,
                     channel = payload.event.channel,
                     threadTs = payload.event.threadTs,
                     message = processCommand(
-                        ctx = CommandContext(
-                            slack = ctx,
-                            authorId = payload.event.user,
-                        ),
+                        userId = payload.event.user,
                         sessionFactory = sessionFactory,
-                        command = text.cleanSlackMessage(ctx),
+                        command = text.cleanSlackMessage(slackCtx),
                     ),
                 )
             }
         }
 
-        ctx.ack()
+        slackCtx.ack()
     }
 
     SocketModeApp(app).start()
