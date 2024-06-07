@@ -136,7 +136,7 @@ private fun processLookup(sessionFactory: SessionFactory, command: String): Stri
 }
 
 fun processCommand(ctx: CommandContext, sessionFactory: SessionFactory, command: String): String {
-    val adjusted = command.stripSelfMentions(ctx.slack).trim()
+    val adjusted = command.trim()
 
     return if (adjusted.startsWith(CHANGE_PREFIX)) {
         processChange(ctx, sessionFactory, adjusted.removePrefix("!"))

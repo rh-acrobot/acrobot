@@ -19,6 +19,10 @@ private fun trySendMessage(ctx: EventContext, channel: String, threadTs: String?
     }
 }
 
+private fun String.cleanSlackMessage(ctx: EventContext): String {
+    return stripSelfMentions(ctx).decodeSlackEscapes()
+}
+
 fun main() {
     val app = App()
     val sessionFactory = createSessionFactory()
@@ -47,7 +51,7 @@ fun main() {
                         authorId = payload.event.user,
                     ),
                     sessionFactory = sessionFactory,
-                    command = text.decodeSlackEscapes(),
+                    command = text.cleanSlackMessage(ctx),
                 ),
             )
         }
@@ -78,7 +82,7 @@ fun main() {
                             authorId = payload.event.user,
                         ),
                         sessionFactory = sessionFactory,
-                        command = text.decodeSlackEscapes(),
+                        command = text.cleanSlackMessage(ctx),
                     ),
                 )
             }
