@@ -24,15 +24,14 @@ object Messages {
     const val MULTIPLE_UPDATE_SEPARATORS =
         "Your message contains multiple `$UPDATE_EXPLANATION_SEPARATOR`s, so I don't know how to parse it. Please do not include `$UPDATE_EXPLANATION_SEPARATOR` in your acronym or explanation, or you can write `help` for more informtation."
 
-    const val HELP_TEXT: String = "You are interacting with Acrobot. \n\n" +
-            "Actions:\n" +
-            "*Get an acronym explanation:* `@Acrobot acronym` \n" +
-            "*Insert an acronym:* `@Acrobot !acronym=explanation` \n" +
-            "*Change old explanation to a new one:* `@Acrobot !acronym=old explanation => new explanation` \n" +
-            "*Delete old explanation:* `@Acrobot !acronym = old explanation =>` \n" +
-            "You can add an explanation to an already existing acronym the same way as inserting. \n" +
-            "All of the actions work in a direct message without tagging `@Acrobot`. Whitespaces shouldn't matter," +
-            "and you can input acronym in both lower- and uppercase; it will be matched regardless of the capitalisation. \n\n" +
-            "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
-            "https://github.com/m-czernek/acrobot"
+    const val HELP_TEXT: String = """You are interacting with Acrobot. 
+Actions:
+*Get an acronym explanation:* `@Acrobot acronym` 
+*Insert an acronym:* `@Acrobot ${CHANGE_PREFIX}acronym${ACRONYM_SEPARATOR}explanation` 
+*Change old explanation to a new one:* `@Acrobot ${CHANGE_PREFIX}acronym${ACRONYM_SEPARATOR}old explanation $UPDATE_EXPLANATION_SEPARATOR new explanation` 
+*Delete old explanation:* `@Acrobot ${CHANGE_PREFIX}acronym ${ACRONYM_SEPARATOR} old explanation ${UPDATE_EXPLANATION_SEPARATOR}` 
+You can add an explanation to an already existing acronym the same way as inserting. 
+All of the actions work in a direct message without tagging `@Acrobot`. Whitespace doesn't matter,and acronyms are matched without regard to case. 
+
+Acrobot is implemented by Janet Cobb. You can find documentation and file issues or suggest improvements at https://github.com/randomnetcat/acrobot"""
 }

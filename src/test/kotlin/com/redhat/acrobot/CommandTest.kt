@@ -132,4 +132,10 @@ class CommandTest : TestLifecycleDB {
     fun `invalid update syntax`(command: String) {
         assertOutput(Messages.INCORRECT_FORMAT_FOR_SAVING_ACRONYM, command)
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["help", " help  ", "HELP", "!help", "! help  ", "  ! HeLP  "])
+    fun `responds with help`(command: String) {
+        assertOutput(Messages.HELP_TEXT, command)
+    }
 }
