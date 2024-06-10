@@ -6,27 +6,23 @@ import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 
 object Messages {
     const val INCORRECT_FORMAT_FOR_SAVING_ACRONYM: String =
-        "Please enter the acronym in format of $CHANGE_PREFIX`acronym` $ACRONYM_SEPARATOR `explanation`" +
+        "Please enter the acronym in format of `${CHANGE_PREFIX}[acronym] $ACRONYM_SEPARATOR [explanation]`" +
                 " to save an explanation, or only `acronym` to get an explanation. Alternatively, send `help` for more information."
 
-    const val EXPLANATION_SAVED: String = "Thank you, I have saved your explanation."
-
-    const val ACRONYM_UPDATED: String = "Thank you, I have updated the acronym."
-
-    const val INSUFFICIENT_PRIVILEGES: String = "You cannot update acronyms that you did not save. Aborting!"
-
+    const val EXPLANATION_SAVED: String = "I have saved your explanation. Thank you!"
+    const val EXPLANATION_UPDATED: String = "I have updated the acronym. Thank you!"
     const val EXPLANATION_REMOVED: String = "Explanation removed. Thank you!"
 
     const val EXPLANATION_NOT_FOUND: String =
-        "No such explanation with given Acronym. Are you sure the acronym is correct?"
-
+        "I did not find any matching explanation for the given acronym. Please double-check the acronym and your spelling."
 
     const val ACRONYM_NOT_FOUND: String =
-        "No such acronym found. Add it using the syntax `${CHANGE_PREFIX}acronym $ACRONYM_SEPARATOR explanation` (queries are case-insensitive), " +
-                "or send `help` for more info."
+        "I was unable to find that acronym. Write `help` for information on how to add acronyms."
+
+    const val INSUFFICIENT_PRIVILEGES: String = "You cannot update acronyms that you did not save. Aborting!"
 
     const val MULTIPLE_UPDATE_SEPARATORS =
-        "Your message cannot contain multiple \"$UPDATE_EXPLANATION_SEPARATOR\"s, because I do not know how to parse it."
+        "Your message contains multiple `$UPDATE_EXPLANATION_SEPARATOR`s, so I don't know how to parse it. Please do not include `$UPDATE_EXPLANATION_SEPARATOR` in your acronym or explanation, or you can write `help` for more informtation."
 
     const val HELP_TEXT: String = "You are interacting with Acrobot. \n\n" +
             "Actions:\n" +

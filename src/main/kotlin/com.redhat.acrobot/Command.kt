@@ -27,7 +27,7 @@ private fun processReplaceExplanation(
 
     deleteExplanation(session, existingExplanation)
 
-    return Messages.ACRONYM_UPDATED
+    return Messages.EXPLANATION_UPDATED
 }
 
 private fun processRemoveExplanation(

@@ -52,7 +52,7 @@ class CommandTest : TestLifecycleDB {
         addExplanation("TEST", "Hello!")
         assertOutput("Hello!", "TEST")
 
-        assertOutput(Messages.ACRONYM_UPDATED, "!TEST = Hello! => Goodbye!")
+        assertOutput(Messages.EXPLANATION_UPDATED, "!TEST = Hello! => Goodbye!")
         assertOutput("Goodbye!", "TEST")
     }
 
