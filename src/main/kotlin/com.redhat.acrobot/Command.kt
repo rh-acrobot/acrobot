@@ -66,8 +66,12 @@ private fun processNewExplanation(
     return Messages.EXPLANATION_SAVED
 }
 
+private val ACRONYM_SEPARATOR_PATTERN = Regex(
+    "(?!${Regex.escape(UPDATE_EXPLANATION_SEPARATOR)})${Regex.escape(ACRONYM_SEPARATOR)}",
+)
+
 private fun processChange(userId: String, session: Session, command: String): String {
-    val parts = command.split(ACRONYM_SEPARATOR, limit = 2).map { it.trim() }
+    val parts = command.split(ACRONYM_SEPARATOR_PATTERN, limit = 2).map { it.trim() }
 
     if (parts.size < 2) {
         return Messages.INCORRECT_FORMAT_FOR_SAVING_ACRONYM
