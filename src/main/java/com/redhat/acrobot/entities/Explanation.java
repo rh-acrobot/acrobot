@@ -1,6 +1,7 @@
 package com.redhat.acrobot.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.Length;
 import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
@@ -12,7 +13,10 @@ public class Explanation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    public static final int MAX_EXPLANATION_LENGTH = Length.LONG;
+
     @NaturalId
+    @Column(length = MAX_EXPLANATION_LENGTH)
     private String explanation;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,7 +32,7 @@ public class Explanation implements Serializable {
     Explanation(Acronym acronym, String authorId, String explanation) {
         this.acronym = acronym;
         this.authorId = authorId;
-        this.explanation = explanation;
+        setExplanation(explanation);
     }
 
     protected int getId() {
@@ -44,6 +48,10 @@ public class Explanation implements Serializable {
     }
 
     protected void setExplanation(String explanation) {
+        if (explanation.length() > MAX_EXPLANATION_LENGTH) {
+            throw new IllegalArgumentException("Explanation exceeds maximum length of " + MAX_EXPLANATION_LENGTH + ": " + explanation.length());
+        }
+
         this.explanation = explanation;
     }
 

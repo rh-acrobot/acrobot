@@ -1,5 +1,6 @@
 package com.redhat.acrobot
 
+import com.redhat.acrobot.entities.Explanation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
@@ -137,5 +138,12 @@ class CommandTest : TestLifecycleDB {
     @ValueSource(strings = ["help", " help  ", "HELP", "!help", "! help  ", "  ! HeLP  "])
     fun `responds with help`(command: String) {
         assertOutput(Messages.HELP_TEXT, command)
+    }
+
+    @Test
+    fun `explanation too long`() {
+        val explanation = StringBuilder().repeat("*", Explanation.MAX_EXPLANATION_LENGTH + 1)
+
+        assertOutput(Messages.EXPLANATION_TOO_LONG, "!TEST = $explanation")
     }
 }

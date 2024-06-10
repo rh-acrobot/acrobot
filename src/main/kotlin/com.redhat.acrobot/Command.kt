@@ -4,7 +4,16 @@ import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
 import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
 import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
+import com.redhat.acrobot.entities.Explanation
 import org.hibernate.Session
+
+private inline fun validateExplanationOrElse(
+    explanationText: String,
+    onFailure: (String) -> Nothing
+) {
+    if (explanationText.length > Explanation.MAX_EXPLANATION_LENGTH)
+        onFailure(Messages.EXPLANATION_TOO_LONG)
+}
 
 private fun processReplaceExplanation(
     userId: String,
@@ -14,6 +23,8 @@ private fun processReplaceExplanation(
     newExplanationText: String,
 ): String {
     acronym ?: return Messages.ACRONYM_NOT_FOUND
+
+    validateExplanationOrElse(newExplanationText) { msg -> return msg }
 
     val existingExplanation = findExplanation(session, acronym, oldExplanationText)
         ?: return Messages.EXPLANATION_NOT_FOUND
@@ -55,6 +66,8 @@ private fun processNewExplanation(
     acronym: Acronym,
     newExplanationText: String,
 ): String {
+    validateExplanationOrElse(newExplanationText) { msg -> return msg }
+
     val existingExplanation = findExplanation(session, acronym, newExplanationText)
 
     if (existingExplanation != null) {

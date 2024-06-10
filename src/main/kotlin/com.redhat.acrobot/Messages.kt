@@ -3,6 +3,7 @@ package com.redhat.acrobot
 import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
 import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
 import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
+import com.redhat.acrobot.entities.Explanation
 
 object Messages {
     const val INCORRECT_FORMAT_FOR_SAVING_ACRONYM: String =
@@ -12,6 +13,9 @@ object Messages {
     const val EXPLANATION_SAVED: String = "I have saved your explanation. Thank you!"
     const val EXPLANATION_UPDATED: String = "I have updated the acronym. Thank you!"
     const val EXPLANATION_REMOVED: String = "Explanation removed. Thank you!"
+
+    const val EXPLANATION_TOO_LONG: String =
+        "Sorry, that explanation is too long. Please limit explanations to ${Explanation.MAX_EXPLANATION_LENGTH} characters."
 
     const val EXPLANATION_NOT_FOUND: String =
         "I did not find any matching explanation for the given acronym. Please double-check the acronym and your spelling."
