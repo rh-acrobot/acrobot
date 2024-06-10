@@ -1,29 +1,11 @@
 package com.redhat.acrobot
 
-import com.redhat.acrobot.entities.Acronym
-import com.redhat.acrobot.entities.Explanation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CommandTest : TestLifecycleDB {
-    private inline fun <reified T> getAllOf(): List<T> {
-        return session.createQuery(
-            session.criteriaBuilder.createQuery(T::class.java).also { query ->
-                query.select(query.from(T::class.java))
-            },
-        ).resultList
-    }
-
-    private fun getAllAcronyms(): List<Acronym> {
-        return getAllOf<Acronym>()
-    }
-
-    private fun getAllExplanations(): List<Explanation> {
-        return getAllOf<Explanation>()
-    }
-
     private val userA = "USER_A"
     private val userB = "USER_B"
 
