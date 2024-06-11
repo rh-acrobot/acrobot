@@ -3,6 +3,7 @@ package com.redhat.acrobot.entities;
 import jakarta.persistence.*;
 import org.hibernate.Length;
 import org.hibernate.annotations.NaturalId;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,13 +24,12 @@ public class Explanation implements Serializable {
     @NaturalId
     private Acronym acronym;
 
-    @Basic(optional = false)
     private String authorId;
 
     public Explanation() {
     }
 
-    Explanation(Acronym acronym, String authorId, String explanation) {
+    Explanation(Acronym acronym, @Nullable String authorId, String explanation) {
         this.acronym = acronym;
         this.authorId = authorId;
         setExplanation(explanation);
@@ -63,11 +63,12 @@ public class Explanation implements Serializable {
         this.acronym = acronym;
     }
 
+    @Nullable
     public String getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(String authorEmail) {
+    public void setAuthorId(@Nullable String authorEmail) {
         this.authorId = authorEmail;
     }
 

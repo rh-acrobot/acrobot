@@ -15,6 +15,15 @@ private inline fun validateExplanationOrElse(
         onFailure(Messages.EXPLANATION_TOO_LONG)
 }
 
+private fun userCanModify(userId: String, explanation: Explanation): Boolean {
+    // Allow explanations with null author to be edited by anyone. Null authors will
+    // only be used when importing old data, and all acronyms created through the
+    // bot's interface will have an author set in createExplanation.
+
+    val authorId = explanation.authorId
+    return userId == authorId || authorId == null
+}
+
 private fun processReplaceExplanation(
     userId: String,
     session: Session,
@@ -29,7 +38,7 @@ private fun processReplaceExplanation(
     val existingExplanation = findExplanation(session, acronym, oldExplanationText)
         ?: return Messages.EXPLANATION_NOT_FOUND
 
-    if (existingExplanation.authorId != userId) {
+    if (!userCanModify(userId, existingExplanation)) {
         return Messages.INSUFFICIENT_PRIVILEGES
     }
 
@@ -51,7 +60,7 @@ private fun processRemoveExplanation(
 
     val target = findExplanation(session, acronym, explanationText) ?: return Messages.EXPLANATION_NOT_FOUND
 
-    if (target.authorId != userId) {
+    if (!userCanModify(userId, target)) {
         return Messages.INSUFFICIENT_PRIVILEGES
     }
 

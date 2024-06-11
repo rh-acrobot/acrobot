@@ -146,4 +146,30 @@ class CommandTest : TestLifecycleDB {
 
         assertOutput(Messages.EXPLANATION_TOO_LONG, "!TEST = $explanation")
     }
+
+    @Test
+    fun `update explanation with null author`() {
+        val acronym = findOrCreateAcronym(session, "TEST")
+        val explanation = acronym.createExplanation(null, "A")
+        session.persist(explanation)
+
+        assertOutput(Messages.EXPLANATION_UPDATED, "!TEST = A => B", user = userA)
+        assertOutput(Messages.EXPLANATION_NOT_FOUND, "!TEST = A => X")
+
+        // Once userA has changed the explanation, userB should not be able to change the
+        // new explanation
+        assertOutput(Messages.INSUFFICIENT_PRIVILEGES, "!TEST = B => C", userB)
+
+        assertOutput("B", "TEST")
+    }
+
+    @Test
+    fun `delete explanation with null author`() {
+        val acronym = findOrCreateAcronym(session, "TEST")
+        val explanation = acronym.createExplanation(null, "A")
+        session.persist(explanation)
+
+        assertOutput(Messages.EXPLANATION_REMOVED, "!TEST = A =>", user = userA)
+        assertOutput(Messages.ACRONYM_NOT_FOUND, "TEST")
+    }
 }
