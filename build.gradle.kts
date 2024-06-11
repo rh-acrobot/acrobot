@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.24"
     kotlin("kapt") version "1.9.24"
+    application
 }
 
 group = "com.redhat"
@@ -18,6 +19,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+application {
+    mainClass = "com.redhat.acrobot.MainKt"
 }
 
 dependencies {
