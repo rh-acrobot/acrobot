@@ -198,4 +198,22 @@ class CommandTest : TestLifecycleDB {
             user = userB,
         )
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["!my_explanations delete", "!my_explanations DELETE", "!my_explanations delete fasdfs"])
+    fun `my_explanations delete returns confirm`(command: String) {
+        addExplanation("TEST", "An explanation.", user = userA)
+        assertOutput(Messages.AUTHOR_CONFIRM_DELETE_EXPLANATIONS, command, user = userA)
+        assertOutput("An explanation.", "TEST")
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["!my_explanations delete confirm", "!my_explanations delete CONFIRM"])
+    fun `my_explanations delete confirm deletes explanations`(command: String) {
+        addExplanation("TEST", "An explanation.", user = userA)
+        addExplanation("TEST", "Another explanation.", user = userB)
+
+        assertOutput(Messages.AUTHOR_EXPLANATIONS_DELETED, command, user = userA)
+        assertOutput("Another explanation.", "TEST")
+    }
 }

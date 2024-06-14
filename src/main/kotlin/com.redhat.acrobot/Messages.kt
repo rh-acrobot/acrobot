@@ -30,6 +30,11 @@ object Messages {
 
     const val AUTHOR_NO_EXPLANATIONS = "You have not added any explanations."
 
+    const val AUTHOR_CONFIRM_DELETE_EXPLANATIONS =
+        "Use `@Acrobot ${COMMAND_PREFIX}my_explanations delete confirm` to confirm this action. If you do this, **all explanations you have added will be permanently removed**."
+
+    const val AUTHOR_EXPLANATIONS_DELETED = "All of your explanations have been deleted."
+
     const val HELP_TEXT: String = """You are interacting with Acrobot. 
 Actions:
 *Get an acronym explanation:* `@Acrobot acronym` 
@@ -37,6 +42,7 @@ Actions:
 *Change old explanation to a new one:* `@Acrobot ${COMMAND_PREFIX}acronym${ACRONYM_EXPLANATION_SEPARATOR}old explanation $EXPLANATION_REPLACEMENT_SEPARATOR new explanation` 
 *Delete old explanation:* `@Acrobot ${COMMAND_PREFIX}acronym ${ACRONYM_EXPLANATION_SEPARATOR} old explanation ${EXPLANATION_REPLACEMENT_SEPARATOR}`
 *List your explanations:* `@Acrobot ${COMMAND_PREFIX}my_explanations`
+*Delete all of your explanations:* `@Acrobot ${COMMAND_PREFIX}my_explanations delete`
 You can add an explanation to an already existing acronym the same way as inserting. 
 All of the actions work in a direct message without tagging `@Acrobot`. Whitespace doesn't matter,and acronyms are matched without regard to case. 
 

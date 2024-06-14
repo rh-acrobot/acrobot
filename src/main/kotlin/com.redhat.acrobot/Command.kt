@@ -144,7 +144,19 @@ private fun processChange(userId: String, session: Session, command: String): St
     }
 }
 
-private fun processExplanationsCommand(userId: String, session: Session, command: String): String {
+private fun processExplanationsDeleteCommand(userId: String, session: Session, command: String): String {
+    if (command.trim() != "confirm") return Messages.AUTHOR_CONFIRM_DELETE_EXPLANATIONS
+
+    val explanations = findExplanationsByAuthor(session, userId)
+
+    for (explanation in explanations) {
+        deleteExplanation(session, explanation)
+    }
+
+    return Messages.AUTHOR_EXPLANATIONS_DELETED
+}
+
+private fun processExplanationsListCommand(userId: String, session: Session): String {
     val explanations = findExplanationsByAuthor(session, userId)
 
     if (explanations.isEmpty()) {
@@ -157,6 +169,16 @@ private fun processExplanationsCommand(userId: String, session: Session, command
                 .joinToString("\n") {
                     "* ${it.acronym.acronym} = ${it.explanation}"
                 }
+}
+
+private fun processExplanationsCommand(userId: String, session: Session, command: String): String {
+    val adjustedCommand = command.trim().lowercase()
+
+    if (adjustedCommand.startsWith("delete")) {
+        return processExplanationsDeleteCommand(userId, session, adjustedCommand.removePrefix("delete"))
+    }
+
+    return processExplanationsListCommand(userId, session)
 }
 
 private val MY_EXPLANATIONS_PATTERN = Regex("^my_explanations\\b", RegexOption.IGNORE_CASE)
