@@ -144,6 +144,35 @@ private fun processChange(userId: String, session: Session, command: String): St
     }
 }
 
+private fun processExplanationsCommand(userId: String, session: Session, command: String): String {
+    val explanations = findExplanationsByAuthor(session, userId)
+
+    if (explanations.isEmpty()) {
+        return Messages.AUTHOR_NO_EXPLANATIONS
+    }
+
+    return "You have created the following explanations:\n\n" +
+            explanations
+                .sortedWith(compareBy<Explanation> { it.acronym.acronym }.thenBy { it.explanation })
+                .joinToString("\n") {
+                    "* ${it.acronym.acronym} = ${it.explanation}"
+                }
+}
+
+private val MY_EXPLANATIONS_PATTERN = Regex("^my_explanations\\b", RegexOption.IGNORE_CASE)
+
+private fun processCommand(userId: String, session: Session, command: String): String {
+    if (command.contains(MY_EXPLANATIONS_PATTERN)) {
+        return processExplanationsCommand(
+            userId = userId,
+            session = session,
+            command = command.removePrefix("my_explanations"),
+        )
+    }
+
+    return processChange(userId, session, command)
+}
+
 private fun processLookup(session: Session, command: String): String {
     val acronym = findAcronym(session, command.trim())
 
@@ -165,7 +194,7 @@ fun processMessage(userId: String, session: Session, command: String): String {
     return if (adjusted.matches(HELP_PATTERN)) {
         return Messages.HELP_TEXT
     } else if (adjusted.startsWith(COMMAND_PREFIX)) {
-        processChange(
+        processCommand(
             userId = userId,
             session = session,
             command = adjusted.removePrefix("!"),

@@ -172,4 +172,30 @@ class CommandTest : TestLifecycleDB {
         assertOutput(Messages.EXPLANATION_REMOVED, "!TEST = A =>", user = userA)
         assertOutput(Messages.ACRONYM_NOT_FOUND, "TEST")
     }
+
+    @Test
+    fun `my_explanations returns message when empty`() {
+        addExplanation("TEST", "An explanation.", user = userA)
+        assertOutput(Messages.AUTHOR_NO_EXPLANATIONS, "!my_explanations", user = userB)
+    }
+
+    @Test
+    fun `my_explanations returns list of my explanations`() {
+        addExplanation("TEST0", "An explanation", user = userA)
+        addExplanation("TEST0", "Another explanation", user = userB)
+        addExplanation("TEST1", "A good explanation", user = userA)
+        addExplanation("TEST1", "An even better explanation", user = userB)
+
+        assertOutput(
+            "You have created the following explanations:\n\n* TEST0 = An explanation\n* TEST1 = A good explanation",
+            "!my_explanations",
+            user = userA,
+        )
+
+        assertOutput(
+            "You have created the following explanations:\n\n* TEST0 = Another explanation\n* TEST1 = An even better explanation",
+            "!my_explanations",
+            user = userB,
+        )
+    }
 }
