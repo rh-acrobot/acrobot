@@ -159,7 +159,7 @@ private fun processLookup(session: Session, command: String): String {
 
 private val HELP_PATTERN = Regex("^\\s*(${Regex.escape(COMMAND_PREFIX)}\\s*)?help\\s*$", RegexOption.IGNORE_CASE)
 
-fun processCommand(userId: String, session: Session, command: String): String {
+fun processMessage(userId: String, session: Session, command: String): String {
     val adjusted = command.trim()
 
     return if (adjusted.matches(HELP_PATTERN)) {

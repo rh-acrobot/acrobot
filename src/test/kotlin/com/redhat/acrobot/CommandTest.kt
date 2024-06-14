@@ -11,7 +11,7 @@ class CommandTest : TestLifecycleDB {
     private val userB = "USER_B"
 
     private fun runCommand(command: String, user: String = userA): String {
-        return processCommand(userId = user, session = session, command = command)
+        return processMessage(userId = user, session = session, command = command)
     }
 
     private fun assertOutput(expected: String, command: String, user: String = userA) {

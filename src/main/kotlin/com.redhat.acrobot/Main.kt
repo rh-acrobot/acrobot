@@ -69,7 +69,7 @@ fun main() {
 
             handleErrors(source) {
                 source.trySendMessage(sessionFactory.fromTransaction { session ->
-                    processCommand(
+                    processMessage(
                         userId = payload.event.user,
                         session = session,
                         command = text.cleanSlackMessage(ctx),
@@ -102,7 +102,7 @@ fun main() {
 
                 handleErrors(source) {
                     source.trySendMessage(sessionFactory.fromTransaction { session ->
-                        processCommand(
+                        processMessage(
                             userId = payload.event.user,
                             session = session,
                             command = text.cleanSlackMessage(ctx),
