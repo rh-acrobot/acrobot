@@ -10,6 +10,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+
+    maven {
+        url = uri("https://download.red-gate.com/maven/release")
+    }
 }
 
 java {
@@ -30,6 +34,10 @@ dependencies {
     implementation("javax.websocket:javax.websocket-api:1.1")
     implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.19")
     implementation("org.slf4j:slf4j-simple:1.7.36")
+
+    // Flyway for database migrations
+    implementation("com.redgate.flyway:flyway-core:10.15.0")
+    runtimeOnly("com.redgate.flyway:flyway-database-postgresql:10.15.0")
 
     // JDBC drivers
     runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
