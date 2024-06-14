@@ -78,7 +78,8 @@ class EntitiesTest : TestLifecycleDB {
         private lateinit var acronymA: Acronym
         private lateinit var acronymB: Acronym
 
-        private val user = "USER"
+        private val userA = "USERA"
+        private val userB = "USERB"
 
         @BeforeTest
         fun setUp() {
@@ -88,7 +89,7 @@ class EntitiesTest : TestLifecycleDB {
 
         @Test
         fun `createExplanation adds explanation to Acronym`() {
-            val explanation = acronymA.createExplanation(user, "Something.")
+            val explanation = acronymA.createExplanation(userA, "Something.")
             session.persist(explanation)
 
             assertEquals(1, getAllExplanations().count())
@@ -104,7 +105,7 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation finds explanation when it exists`() {
             val text = "An explanation."
 
-            val created = acronymA.createExplanation(user, text)
+            val created = acronymA.createExplanation(userA, text)
             session.persist(created)
 
             val found = findExplanation(session, acronymA, text)
@@ -116,7 +117,7 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation does not find explanation for other acronym`() {
             val text = "An explanation."
 
-            val created = acronymA.createExplanation(user, text)
+            val created = acronymA.createExplanation(userA, text)
             session.persist(created)
 
             assertNull(findExplanation(session, acronymB, text))
@@ -124,7 +125,7 @@ class EntitiesTest : TestLifecycleDB {
 
         @Test
         fun `findExplanation does not find explanation for different text`() {
-            val created = acronymA.createExplanation(user, "An explanation.")
+            val created = acronymA.createExplanation(userA, "An explanation.")
             session.persist(created)
 
             assertNull(findExplanation(session, acronymA, "Some other explanation."))
@@ -134,10 +135,10 @@ class EntitiesTest : TestLifecycleDB {
         fun `findExplanation handles explanations with the same text`() {
             val text = "An explanation."
 
-            val createdA = acronymA.createExplanation(user, text)
+            val createdA = acronymA.createExplanation(userA, text)
             session.persist(createdA)
 
-            val createdB = acronymB.createExplanation(user, text)
+            val createdB = acronymB.createExplanation(userA, text)
             session.persist(createdB)
 
             assertEquals(2, getAllExplanations().count())
@@ -153,7 +154,7 @@ class EntitiesTest : TestLifecycleDB {
 
         @Test
         fun `deleteExplanation deletes explanation`() {
-            val explanation = acronymA.createExplanation(user, "Some explanation.")
+            val explanation = acronymA.createExplanation(userA, "Some explanation.")
             assertEquals(1, getAllExplanations().count())
 
             deleteExplanation(session, explanation)
@@ -162,12 +163,27 @@ class EntitiesTest : TestLifecycleDB {
 
         @Test
         fun `deleteExplanation updates acronym`() {
-            val explanation = acronymA.createExplanation(user, "Some explanation.")
+            val explanation = acronymA.createExplanation(userA, "Some explanation.")
             assertTrue(acronymA.explanations.contains(explanation))
 
             deleteExplanation(session, explanation)
             assertFalse(acronymA.explanations.contains(explanation))
             assertEquals(0, acronymA.explanations.size)
+        }
+
+        @Test
+        fun `findExplanationsByAuthor returns explanations from that author`() {
+            val explanation1 = acronymA.createExplanation(userA, "Some explanation.")
+            val explanation2 = acronymA.createExplanation(userB, "Another explanation.")
+            val explanation3 = acronymB.createExplanation(userA, "Some explanation.")
+            val explanation4 = acronymB.createExplanation(userB, "Another explanation.")
+
+            for (explanation in listOf(explanation1, explanation2, explanation3, explanation4)) {
+                session.persist(explanation)
+            }
+
+            assertEquals(setOf(explanation1, explanation3), findExplanationsByAuthor(session, userA).toSet())
+            assertEquals(setOf(explanation2, explanation4), findExplanationsByAuthor(session, userB).toSet())
         }
     }
 }

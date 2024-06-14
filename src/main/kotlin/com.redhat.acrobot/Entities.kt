@@ -29,6 +29,19 @@ fun findExplanation(session: Session, acronym: Acronym, text: String): Explanati
         .load()
 }
 
+fun findExplanationsByAuthor(session: Session, authorId: String): List<Explanation> {
+    val builder = session.criteriaBuilder
+
+    val query = builder.createQuery(Explanation::class.java)
+    val root = query.from(Explanation::class.java)
+    query.where(builder.equal(root.get(Explanation_.authorId), authorId))
+
+    val graph = session.createEntityGraph(Explanation::class.java)
+    graph.addSubgraph(Explanation_.acronym)
+
+    return session.createQuery(query).applyLoadGraph(graph).list()
+}
+
 fun deleteExplanation(session: Session, explanation: Explanation) {
     session.remove(explanation)
     explanation.acronym.explanations.remove(explanation)
