@@ -21,7 +21,7 @@ class CommandTest : TestLifecycleDB {
     private fun addExplanation(acronym: String, explanation: String, user: String = userA) {
         assertOutput(
             Messages.EXPLANATION_SAVED,
-            "${CommandFormat.CHANGE_PREFIX}${acronym} ${CommandFormat.ACRONYM_SEPARATOR} $explanation",
+            "${CommandFormat.COMMAND_PREFIX}${acronym} ${CommandFormat.ACRONYM_EXPLANATION_SEPARATOR} $explanation",
             user = user,
         )
     }

@@ -1,8 +1,8 @@
 package com.redhat.acrobot
 
-import com.redhat.acrobot.CommandFormat.ACRONYM_SEPARATOR
-import com.redhat.acrobot.CommandFormat.CHANGE_PREFIX
-import com.redhat.acrobot.CommandFormat.UPDATE_EXPLANATION_SEPARATOR
+import com.redhat.acrobot.CommandFormat.ACRONYM_EXPLANATION_SEPARATOR
+import com.redhat.acrobot.CommandFormat.COMMAND_PREFIX
+import com.redhat.acrobot.CommandFormat.EXPLANATION_REPLACEMENT_SEPARATOR
 import com.redhat.acrobot.entities.Acronym
 import com.redhat.acrobot.entities.Explanation
 import org.hibernate.Session
@@ -80,7 +80,7 @@ private fun processNewExplanation(
     val existingExplanation = findExplanation(session, acronym, newExplanationText)
 
     if (existingExplanation != null) {
-        return "That explanation already exists for the given acronym. If you created it, you can update it with ${CHANGE_PREFIX}change ${acronym.acronym} $ACRONYM_SEPARATOR $newExplanationText $UPDATE_EXPLANATION_SEPARATOR [new version]"
+        return "That explanation already exists for the given acronym. If you created it, you can update it with ${COMMAND_PREFIX}change ${acronym.acronym} $ACRONYM_EXPLANATION_SEPARATOR $newExplanationText $EXPLANATION_REPLACEMENT_SEPARATOR [new version]"
     }
 
     session.persist(acronym.createExplanation(userId, newExplanationText))
@@ -89,7 +89,7 @@ private fun processNewExplanation(
 }
 
 private val ACRONYM_SEPARATOR_PATTERN = Regex(
-    "(?!${Regex.escape(UPDATE_EXPLANATION_SEPARATOR)})${Regex.escape(ACRONYM_SEPARATOR)}",
+    "(?!${Regex.escape(EXPLANATION_REPLACEMENT_SEPARATOR)})${Regex.escape(ACRONYM_EXPLANATION_SEPARATOR)}",
 )
 
 private fun processChange(userId: String, session: Session, command: String): String {
@@ -102,10 +102,10 @@ private fun processChange(userId: String, session: Session, command: String): St
     val acronymText = parts[0]
     val changeInstruction = parts[1]
 
-    if (changeInstruction.contains(UPDATE_EXPLANATION_SEPARATOR)) {
+    if (changeInstruction.contains(EXPLANATION_REPLACEMENT_SEPARATOR)) {
         val acronym = findAcronym(session, acronymText)
 
-        val changeParts = changeInstruction.split(UPDATE_EXPLANATION_SEPARATOR)
+        val changeParts = changeInstruction.split(EXPLANATION_REPLACEMENT_SEPARATOR)
 
         if (changeParts.size > 2) {
             return Messages.MULTIPLE_UPDATE_SEPARATORS
@@ -157,14 +157,14 @@ private fun processLookup(session: Session, command: String): String {
     }
 }
 
-private val HELP_PATTERN = Regex("^\\s*(${Regex.escape(CHANGE_PREFIX)}\\s*)?help\\s*$", RegexOption.IGNORE_CASE)
+private val HELP_PATTERN = Regex("^\\s*(${Regex.escape(COMMAND_PREFIX)}\\s*)?help\\s*$", RegexOption.IGNORE_CASE)
 
 fun processCommand(userId: String, session: Session, command: String): String {
     val adjusted = command.trim()
 
     return if (adjusted.matches(HELP_PATTERN)) {
         return Messages.HELP_TEXT
-    } else if (adjusted.startsWith(CHANGE_PREFIX)) {
+    } else if (adjusted.startsWith(COMMAND_PREFIX)) {
         processChange(
             userId = userId,
             session = session,

@@ -1,7 +1,7 @@
 package com.redhat.acrobot
 
 object CommandFormat {
-    const val CHANGE_PREFIX = "!"
-    const val ACRONYM_SEPARATOR = "="
-    const val UPDATE_EXPLANATION_SEPARATOR = "=>"
+    const val COMMAND_PREFIX = "!"
+    const val ACRONYM_EXPLANATION_SEPARATOR = "="
+    const val EXPLANATION_REPLACEMENT_SEPARATOR = "=>"
 }
