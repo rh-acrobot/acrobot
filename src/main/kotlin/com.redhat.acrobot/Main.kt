@@ -6,7 +6,11 @@ import com.slack.api.bolt.socket_mode.SocketModeApp
 import com.slack.api.model.event.AppMentionEvent
 import com.slack.api.model.event.MessageEvent
 
-private fun trySendMessage(ctx: EventContext, channel: String, threadTs: String?, message: String) {
+private fun String.cleanSlackMessage(ctx: EventContext): String {
+    return stripSelfMentions(ctx).decodeSlackEscapes()
+}
+
+private fun MessageSource.trySendMessage(message: String) {
     val response = ctx.client().chatPostMessage {
         it.channel(channel)
         it.threadTs(threadTs)
@@ -19,8 +23,24 @@ private fun trySendMessage(ctx: EventContext, channel: String, threadTs: String?
     }
 }
 
-private fun String.cleanSlackMessage(ctx: EventContext): String {
-    return stripSelfMentions(ctx).decodeSlackEscapes()
+private data class MessageSource(
+    val ctx: EventContext,
+    val channel: String,
+    val threadTs: String?,
+)
+
+private fun handleErrors(source: MessageSource, block: () -> Unit) {
+    try {
+        block()
+    } catch (e: Exception) {
+        source.ctx.logger.error("Exception while processing message", e)
+
+        try {
+            source.trySendMessage("I'm sorry, I couldn't process your message.")
+        } catch (e2: Exception) {
+            source.ctx.logger.error("Exception while attempting to send error response", e2)
+        }
+    }
 }
 
 fun main() {
@@ -33,6 +53,12 @@ fun main() {
 
     app.event(AppMentionEvent::class.java) { payload, ctx ->
         app.executorService().submit {
+            val source = MessageSource(
+                ctx = ctx,
+                channel = payload.event.channel,
+                threadTs = payload.event.threadTs,
+            )
+
             val text = payload.event.text
 
             ctx.logger.info(
@@ -41,18 +67,15 @@ fun main() {
                 text,
             )
 
-            trySendMessage(
-                ctx = ctx,
-                channel = payload.event.channel,
-                threadTs = payload.event.threadTs,
-                message = sessionFactory.fromTransaction { session ->
+            handleErrors(source) {
+                source.trySendMessage(sessionFactory.fromTransaction { session ->
                     processCommand(
                         userId = payload.event.user,
                         session = session,
                         command = text.cleanSlackMessage(ctx),
                     )
-                },
-            )
+                })
+            }
         }
 
         ctx.ack()
@@ -60,6 +83,12 @@ fun main() {
 
     app.event(MessageEvent::class.java) { payload, ctx ->
         app.executorService().submit {
+            val source = MessageSource(
+                ctx = ctx,
+                channel = payload.event.channel,
+                threadTs = payload.event.threadTs,
+            )
+
             val channelType = payload.event.channelType
             val text = payload.event.text
 
@@ -71,18 +100,15 @@ fun main() {
                     text,
                 )
 
-                trySendMessage(
-                    ctx = ctx,
-                    channel = payload.event.channel,
-                    threadTs = payload.event.threadTs,
-                    message = sessionFactory.fromTransaction { session ->
+                handleErrors(source) {
+                    source.trySendMessage(sessionFactory.fromTransaction { session ->
                         processCommand(
                             userId = payload.event.user,
                             session = session,
                             command = text.cleanSlackMessage(ctx),
                         )
-                    },
-                )
+                    })
+                }
             }
         }
 
