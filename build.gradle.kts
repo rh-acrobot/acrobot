@@ -31,6 +31,7 @@ dependencies {
     implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.19")
     implementation("org.slf4j:slf4j-simple:1.7.36")
     implementation("com.mysql:mysql-connector-j:8.4.0")
+    implementation("org.postgresql:postgresql:42.7.3")
 
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
     kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
