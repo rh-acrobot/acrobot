@@ -22,6 +22,7 @@ public class Explanation implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NaturalId
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_explanation_to_acronym"))
     private Acronym acronym;
 
     private String authorId;
