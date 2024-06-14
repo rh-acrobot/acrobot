@@ -179,7 +179,8 @@ class CommandTest : TestLifecycleDB {
         assertOutput(Messages.AUTHOR_NO_EXPLANATIONS, "!my_explanations", user = userB)
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = ["!my_explanations", "!my_explanations list", "!my_explanations whatever"])
     fun `my_explanations returns list of my explanations`() {
         addExplanation("TEST0", "An explanation", user = userA)
         addExplanation("TEST0", "Another explanation", user = userB)
