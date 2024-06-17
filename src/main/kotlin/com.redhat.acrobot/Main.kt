@@ -37,6 +37,7 @@ private fun handleErrors(source: MessageSource, block: () -> Unit) {
 
         try {
             source.trySendMessage("I'm sorry, I couldn't process your message.")
+            source.trySendMessage("The exception follows:\n```\n" + e.stackTraceToString().take(20000) + "```")
         } catch (e2: Exception) {
             source.ctx.logger.error("Exception while attempting to send error response", e2)
         }
