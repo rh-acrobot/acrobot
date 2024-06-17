@@ -19,6 +19,11 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.highlight_sql" value="true"/>
+
+            <property name="hibernate.agroal.maxSize" value="20"/>
+            <property name="hibernate.agroal.minSize" value="10"/>
+            <property name="hibernate.agroal.acquisitionTimeout" value="PT1s"/>
+            <property name="hibernate.agroal.reapTimeout" value="PT10s"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -43,6 +43,10 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
     runtimeOnly("org.postgresql:postgresql:42.7.3")
 
+    // Agroal connection pooling
+    runtimeOnly("org.hibernate.orm:hibernate-agroal:6.5.2.Final")
+    runtimeOnly("io.agroal:agroal-pool:2.4")
+
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
     kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
 
