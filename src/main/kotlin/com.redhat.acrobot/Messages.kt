@@ -46,7 +46,7 @@ Actions:
 You can add an explanation to an already existing acronym the same way as inserting. 
 All of the actions work in a direct message without tagging `@Acrobot`. Whitespace doesn't matter,and acronyms are matched without regard to case. 
 
-Acrobot is implemented by Janet Cobb. You can find documentation and file issues or suggest improvements at https://github.com/randomnetcat/acrobot
+Acrobot is implemented by Janet Cobb. You can find documentation and file issues or suggest improvements at https://github.com/rh-acrobot/acrobot
 
 Your use of Acrobot is governed by the Red Hat Employee Privacy Statement, available at https://source.redhat.com/departments/legal/global_legal_compliance/compliance_folder/employee_personal_information_privacy_statement_pdfpdf"""
 }
