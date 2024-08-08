@@ -48,5 +48,8 @@ All of the actions work in a direct message without tagging `@Acrobot`. Whitespa
 
 Acrobot is implemented by Janet Cobb. You can find documentation and file issues or suggest improvements at https://github.com/rh-acrobot/acrobot
 
+The acronyms and explanations provided by this bot have been added by Red Hat employees and have not necessarily been verified for accuracy.
+You should verify all information you receive before relying on it.
+
 Your use of Acrobot is governed by the Red Hat Employee Privacy Statement, available at https://source.redhat.com/departments/legal/global_legal_compliance/compliance_folder/employee_personal_information_privacy_statement_pdfpdf"""
 }
