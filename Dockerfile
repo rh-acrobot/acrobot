@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:27234b342c21ff87d109e9a5c005e08f0ed553e7e0b8782c7604eed1b6553dee as builder
+FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:7666303e9b1463b3a42fd43b18367be1a932b4c9aac4684a011332ae1f2840bd as builder
 RUN mkdir /opt/app
 COPY gradle /opt/app/gradle
 COPY gradlew /opt/app/gradlew
@@ -8,7 +8,7 @@ WORKDIR /opt/app
 RUN ./gradlew test
 RUN ./gradlew install
 
-FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:27234b342c21ff87d109e9a5c005e08f0ed553e7e0b8782c7604eed1b6553dee
+FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:7666303e9b1463b3a42fd43b18367be1a932b4c9aac4684a011332ae1f2840bd
 COPY --from=builder /opt/app/build/install/acrobot-slack /opt/app
 WORKDIR /opt/app
 CMD ["/opt/app/bin/acrobot-slack"]
