@@ -36,7 +36,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:1.7.36")
 
     // Flyway for database migrations
-    implementation("com.redgate.flyway:flyway-core:10.15.0")
+    implementation("com.redgate.flyway:flyway-core:10.22.0")
     runtimeOnly("com.redgate.flyway:flyway-database-postgresql:10.15.0")
 
     // JDBC drivers
