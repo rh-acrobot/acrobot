@@ -37,7 +37,7 @@ dependencies {
 
     // Flyway for database migrations
     implementation("com.redgate.flyway:flyway-core:10.15.0")
-    runtimeOnly("com.redgate.flyway:flyway-database-postgresql:10.15.0")
+    runtimeOnly("com.redgate.flyway:flyway-database-postgresql:10.22.0")
 
     // JDBC drivers
     runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
