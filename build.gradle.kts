@@ -51,7 +51,7 @@ dependencies {
     kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
 
     testImplementation(kotlin("test"))
-    testRuntimeOnly("com.h2database:h2:2.2.224")
+    testRuntimeOnly("com.h2database:h2:2.4.240")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
