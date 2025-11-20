@@ -32,7 +32,7 @@ application {
 dependencies {
     implementation("com.slack.api:bolt-socket-mode:1.39.3")
     implementation("javax.websocket:javax.websocket-api:1.1")
-    implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.19")
+    implementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:2.2.1")
     implementation("org.slf4j:slf4j-simple:1.7.36")
 
     // Flyway for database migrations
