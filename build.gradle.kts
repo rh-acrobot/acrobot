@@ -40,7 +40,7 @@ dependencies {
     runtimeOnly("com.redgate.flyway:flyway-database-postgresql:10.15.0")
 
     // JDBC drivers
-    runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
+    runtimeOnly("com.mysql:mysql-connector-j:9.5.0")
     runtimeOnly("org.postgresql:postgresql:42.7.3")
 
     // Agroal connection pooling
