@@ -41,7 +41,7 @@ dependencies {
 
     // JDBC drivers
     runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
-    runtimeOnly("org.postgresql:postgresql:42.7.3")
+    runtimeOnly("org.postgresql:postgresql:42.7.11")
 
     // Agroal connection pooling
     runtimeOnly("org.hibernate.orm:hibernate-agroal:6.5.2.Final")
