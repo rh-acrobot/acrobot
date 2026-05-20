@@ -52,9 +52,9 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testRuntimeOnly("com.h2database:h2:2.2.224")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:6.1.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.0")
 }
 
 tasks.test {
