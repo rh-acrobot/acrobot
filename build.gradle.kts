@@ -44,11 +44,11 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:42.7.3")
 
     // Agroal connection pooling
-    runtimeOnly("org.hibernate.orm:hibernate-agroal:6.5.2.Final")
+    runtimeOnly("org.hibernate.orm:hibernate-agroal:7.4.0.Final")
     runtimeOnly("io.agroal:agroal-pool:2.4")
 
-    implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
-    kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
+    implementation("org.hibernate.orm:hibernate-core:7.4.0.Final")
+    kapt("org.hibernate.orm:hibernate-jpamodelgen:7.4.0.Final")
 
     testImplementation(kotlin("test"))
     testRuntimeOnly("com.h2database:h2:2.2.224")
