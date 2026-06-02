@@ -45,7 +45,7 @@ dependencies {
 
     // Agroal connection pooling
     runtimeOnly("org.hibernate.orm:hibernate-agroal:6.5.2.Final")
-    runtimeOnly("io.agroal:agroal-pool:2.4")
+    runtimeOnly("io.agroal:agroal-pool:2.8.2")
 
     implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
     kapt("org.hibernate.orm:hibernate-jpamodelgen:6.5.2.Final")
